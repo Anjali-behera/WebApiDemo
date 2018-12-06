@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 using WebApiDemo.Services;
 
 namespace WebApiDemo
@@ -28,6 +29,24 @@ namespace WebApiDemo
         {
             services.AddScoped<IPersonService, PersonService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "WebAPI",
+                    Description = " Sample xUnit test case using FluentAssertions and Moq ",
+                    Contact = new Contact
+                    {
+                        Name = "Anjali Behera",
+                        Email = "anjali.bahera@ymedialabs.com",
+                        Url = "https://github.com/Anjali-behera/WebApiDemo"
+                    }
+                   
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +62,16 @@ namespace WebApiDemo
             }
 
             app.UseHttpsRedirection();
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi V1");
+                c.RoutePrefix = string.Empty;
+            });
             app.UseMvc();
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using WebApiDemo.Models;
 using WebApiDemo.Services;
 
@@ -12,10 +13,12 @@ namespace WebApiDemo.Controllers
     public class PersonsController : Controller
     {
         private IPersonService _personService;
+        private readonly IStringLocalizer<PersonsController> _localizer;
 
-        public PersonsController(IPersonService personService)
+        public PersonsController(IPersonService personService, IStringLocalizer<PersonsController> localizer)
         {
             _personService = personService;
+            _localizer = localizer;
         }
         // GET api/values
         [HttpGet]
